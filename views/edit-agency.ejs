@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Agency | Admin Dashboard</title>
+  <!-- Favicon -->
+  <link rel="icon" href="/images/fevicon.png" type="image/gif" />
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/edit-agency.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/jquery.mCustomScrollbar.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header_section">
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+          <img src="/images/logo.png" alt="Modol Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a class="nav-link" href="/admin">
+              Back to Dashboard
+            </a></li>
+            <li class="nav-item"><a class="nav-link" href="/logout">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>Edit Agency</h1>
+    
+    <form class="edit-form" action="/admin/update-agency/<%= agency._id %>" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="name">Agency Name</label>
+        <input type="text" id="name" name="name" class="form-control" value="<%= agency.name %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" class="form-control" value="<%= agency.location %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="yearFounded">Year Founded</label>
+        <input type="number" id="yearFounded" name="yearFounded" class="form-control" value="<%= agency.yearFounded %>" required>
+      </div>
+
+      <div class="form-group">
+        <label>Current Logo</label>
+        <% if (agency.image) { %>
+          <img src="<%= agency.image %>" class="current-image" alt="Current logo">
+        <% } else { %>
+          <p class="no-image">No logo uploaded</p>
+        <% } %>
+      </div>
+
+      <div class="form-group">
+        <input type="file" id="image" name="image" class="form-control" accept="image/*">
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" name="category" class="form-control" required>
+          <option value="">Select Category</option>
+          <% categories.forEach(category => { %>
+            <option value="<%= category.name %>" 
+              <%= category.name === agency.category ? 'selected' : '' %>>
+              <%= category.name %>
+            </option>
+          <% }) %>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save"></i> Update Agency
+      </button>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const imageInput = document.getElementById('image');
+      if (imageInput) {
+        imageInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+              const currentImage = document.querySelector('.current-image');
+              if (currentImage) {
+                currentImage.src = event.target.result;
+              } else {
+                const noImage = document.querySelector('.no-image');
+                if (noImage) {
+                  noImage.insertAdjacentHTML('afterend', 
+                    '<img src="' + event.target.result + '" class="current-image" alt="New logo preview">');
+                }
+              }
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

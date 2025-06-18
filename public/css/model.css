@@ -1,0 +1,169 @@
+ :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4cc9f0;
+      --dark-color: #2b2d42;
+      --light-color: #f8f9fa;
+      --success-color: #4caf50;
+      --danger-color: #f44336;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    body {
+      background-color: #f5f7fa;
+      color: var(--dark-color);
+    }
+    
+    /* Header */
+    .header_section {
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Dashboard Content */
+    .dashboard-container {
+      padding: 30px 0;
+      min-height: calc(100vh - 200px);
+    }
+    
+    .agencies-section {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 30px;
+      margin-bottom: 30px;
+      margin-top: 60px;
+    }
+    
+    .section-title {
+      color: var(--primary-color);
+      margin-bottom: 25px;
+      font-weight: 600;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--accent-color);
+    }
+    
+    /* Agency Cards */
+    .agency-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .agency-card {
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      background: white;
+    }
+    
+    .agency-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .agency-card-header {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .agency-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid #eee;
+      margin-bottom: 15px;
+    }
+    
+    .agency-card-body {
+      padding: 20px;
+    }
+    
+    .agency-info {
+      margin-bottom: 15px;
+    }
+    
+    .agency-info-item {
+      display: flex;
+      margin-bottom: 8px;
+    }
+    
+    .agency-info-icon {
+      width: 20px;
+      margin-right: 10px;
+      color: var(--primary-color);
+    }
+    
+    .agency-card-footer {
+      padding: 15px 20px;
+      background: #f9f9f9;
+      text-align: center;
+    }
+    
+    .apply-btn {
+      background: var(--success-color);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    
+    .apply-btn:hover {
+      background: #3d8b40;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .apply-btn:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    /* Footer */
+    .footer_section {
+      background: var(--dark-color);
+      color: white;
+      padding: 30px 0;
+    }
+    
+    .footer_section a {
+      color: var(--accent-color);
+    }
+    
+    .logout-btn {
+      color: var(--danger-color) !important;
+      font-weight: 500;
+    }
+    
+    .profile-link {
+      color: var(--primary-color) !important;
+      font-weight: 500;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .agencies-section {
+        padding: 20px;
+      }
+      
+      .agency-cards {
+        grid-template-columns: 1fr;
+      }
+    }

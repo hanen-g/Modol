@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta Tags -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard | Modol</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="images/fevicon.png" type="image/gif">
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header_section">
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+          <img src="images/logo.png" alt="Modol Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a href="/logout" class="nav-link logout-link">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Dashboard Content -->
+  <main class="dashboard-container">
+    <div class="container">
+      <h1 class="text-center mb-5"></h1>
+      
+      <!-- Models Section -->
+      <section class="section-card">
+  <h2 class="section-title">Models</h2>
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Photo</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Gender</th>
+          <th>Age</th>
+          <th>Height</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% models.forEach(model => { %>
+          <tr>
+            <td>
+              <% if (model.profileImage) { %>
+                <img src="<%= model.profileImage %>" alt="Model Photo" style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%; border: 2px solid #eee;">
+              <% } else { %>
+                <div style="width: 60px; height: 60px; background-color: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #eee;">
+                  <i class="fas fa-user" style="color: #ccc; font-size: 24px;"></i>
+                </div>
+              <% } %>
+            </td>
+            <td><%= model.firstname %></td>
+            <td><%= model.lastname %></td>
+            <td><%= model.gender %></td>
+            <td><%= model.age %></td>
+            <td><%= model.height %> cm</td>
+            <td><%= model.category %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+      
+      <!-- Categories Section -->
+      <section class="section-card">
+        <h2 class="section-title">Categories</h2>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% categories.forEach(category => { %>
+                <tr>
+                  <td><%= category.name %></td>
+                  <td>
+                    <form action="/admin/category/<%= category._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Delete this category?');">
+                      <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i> Delete
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3 class="mt-4 mb-3">Add New Category</h3>
+        <form action="/admin/category" method="POST" class="admin-form">
+          <div class="form-group">
+            <input type="text" name="name" class="form-control" placeholder="Category Name" required>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Category
+          </button>
+        </form>
+      </section>
+      
+      <!-- Agencies Section -->
+      <section class="section-card">
+        <h2 class="section-title">Agencies</h2>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Logo</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Year Founded</th>
+                <th>Category</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% agencies.forEach(agency => { %>
+                <tr>
+                  <td>
+                    <% if (agency.image) { %>
+                      <img src="<%= agency.image %>" alt="Logo" style="max-width: 60px; border-radius: 50%;">
+                    <% } else { %>
+                      <i class="fas fa-building" style="font-size: 24px; color: #ccc;"></i>
+                    <% } %>
+                  </td>
+                  <td><%= agency.name %></td>
+                  <td><%= agency.location %></td>
+                  <td><%= agency.yearFounded %></td>
+                  <td><%= agency.category %></td>
+                  <td>
+                    <div class="action-buttons">
+                      <a href="/admin/edit-agency/<%= agency._id %>" class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit"></i> Edit
+                      </a>
+                      <form action="/admin/agency/<%= agency._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this agency?');">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                          <i class="fas fa-trash"></i> Delete
+                        </button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3 class="mt-4 mb-3">Add New Agency</h3>
+        <form action="/admin/agency" method="POST" enctype="multipart/form-data" class="admin-form">
+          <div class="form-group">
+            Agency Name
+            <input type="text" name="name" class="form-control"required>
+          </div>
+          <div class="form-group">
+            Location
+            <input type="text" name="location" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Agency Logo:</label>
+            <input type="file" id="image" name="image" class="form-control" accept="image/*">
+            <img id="imagePreview" class="image-preview" alt="Preview" style="display: none;">
+          </div>
+          <div class="form-group">
+            Year Founded
+            <input type="number" name="yearFounded" class="form-control"required>
+          </div>
+          <div class="form-group">
+            Category
+            <select name="category" class="form-control" required>
+              <option value="">Select Category</option>
+              <% categories.forEach(category => { %>
+                <option value="<%= category.name %>"><%= category.name %></option>
+              <% }) %>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Agency
+          </button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- JavaScript Files -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="js/custom.js"></script>
+  
+  <script>
+    // Preview image on upload
+    document.getElementById('image').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const preview = document.getElementById('imagePreview');
+          preview.src = event.target.result;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Confirm logout and clear token
+    document.querySelector('.logout-link').addEventListener('click', function(e) {
+      if (!confirm('Are you sure you want to logout?')) {
+        e.preventDefault();
+      } else {
+        localStorage.removeItem('token');
+      }
+    });
+  </script>
+</body>
+</html>

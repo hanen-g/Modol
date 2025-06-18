@@ -1,0 +1,95 @@
+ :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4cc9f0;
+      --dark-color: #2b2d42;
+      --light-color: #f8f9fa;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    body {
+      background-color: #f5f7fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    
+    .application-container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 30px;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+    
+    .application-header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .application-header h2 {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    
+    .agency-logo {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #eee;
+      margin: 0 auto 15px;
+      display: block;
+    }
+    
+    .form-group label {
+      font-weight: 500;
+      color: var(--dark-color);
+      margin-bottom: 8px;
+    }
+    
+    .form-control {
+      border-radius: var(--border-radius);
+      padding: 12px 15px;
+      border: 2px solid #eee;
+      transition: all 0.3s;
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    }
+    
+    textarea.form-control {
+      min-height: 150px;
+    }
+    
+    .btn-apply {
+      background: var(--primary-color);
+      color: white;
+      padding: 12px 30px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      border: none;
+      transition: all 0.3s;
+      width: 100%;
+    }
+    
+    .btn-apply:hover {
+      background: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+    
+    .back-link {
+      color: var(--primary-color);
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .back-link:hover {
+      color: var(--secondary-color);
+      text-decoration: none;
+    }

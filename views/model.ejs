@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta Tags -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model Dashboard | Modol</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="/images/fevicon.png" type="image/gif" />
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/model.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/jquery.mCustomScrollbar.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header_section">
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+          <img src="/images/logo.png" alt="Modol Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a class="nav-link" href="/model/profile">
+              <i class="fas fa-user-circle"></i> My Profile
+            </a></li>
+            <li class="nav-item"><a class="nav-link" href="/logout">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Dashboard Content -->
+  <main class="dashboard-container">
+    <div class="container">
+      <!-- Agencies Section -->
+      <section class="agencies-section">
+        <h2 class="section-title">Available Agencies</h2>
+        <div class="agency-cards">
+          <% agencies.forEach(agency => { %>
+            <div class="agency-card">
+              <div class="agency-card-header">
+                <% if (agency.image) { %>
+                  <img src="<%= agency.image %>" class="agency-logo" alt="<%= agency.name %> logo">
+                <% } else { %>
+                  <div class="agency-logo bg-light d-flex align-items-center justify-content-center mx-auto">
+                    <i class="fas fa-building text-muted" style="font-size: 2rem;"></i>
+                  </div>
+                <% } %>
+                <h4><strong><%= agency.name %></strong></h4>
+                <span class="badge badge-primary"><%= agency.category %></span>
+              </div>
+              <div class="agency-card-body">
+                <div class="agency-info">
+                  <div class="agency-info-item">
+                    <i class="fas fa-map-marker-alt agency-info-icon"></i>
+                    <span><%= agency.location %></span>
+                  </div>
+                  <div class="agency-info-item">
+                    <i class="fas fa-calendar-alt agency-info-icon"></i>
+                    <span>Founded: <%= agency.yearFounded %></span>
+                  </div>
+                </div>
+              </div>
+              <div class="agency-card-footer">
+                <button 
+  class="apply-btn" 
+  <% if (appliedAgencyIds.includes(agency._id.toString())) { %> disabled <% } %>
+  onclick="handleApply(this, '<%= agency.name %>', '<%= agency._id %>')"
+>
+  <i class="fas fa-paper-plane mr-1"></i>
+  <% if (appliedAgencyIds.includes(agency._id.toString())) { %>
+    Applied
+  <% } else { %>
+    Apply
+  <% } %>
+</button>
+
+
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="footer_section">
+    <div class="container">
+      <div class="footer_main">
+        <div class="location_text">
+          <ul>
+            <li>
+              <a href="#">
+                <i class="fas fa-map-marker-alt mr-2"></i>
+                <span>Address : Loram Ipusm</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fas fa-phone mr-2"></i>
+                <span>Call : +01 1234567890</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fas fa-envelope mr-2"></i>
+                <span>Email : demo@gmail.com</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript Files -->
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="/js/custom.js"></script>
+  
+  <!-- Dashboard Scripts -->
+  <script>
+    // Handle agency application
+    function handleApply(button, agencyName, agencyId) {
+    window.location.href = `/model/apply/${agencyId}`;
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-check mr-1"></i> Applied';
+  }
+
+
+    
+    // Logout confirmation
+    document.querySelector('.logout-btn')?.addEventListener('click', (e) => {
+      if (!confirm('Are you sure you want to logout?')) {
+        e.preventDefault();
+      } else {
+        localStorage.removeItem('token');
+      }
+    });
+  </script>
+</body>
+</html>

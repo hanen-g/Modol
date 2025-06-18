@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- basic -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- mobile metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+  <!-- site metas -->
+  <title>Login | Modol</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- bootstrap css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <!-- style css -->
+   <link rel="stylesheet" type="text/css" href="css/login.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+
+  <!-- Responsive-->
+  <link rel="stylesheet" href="css/responsive.css">
+  <!-- fevicon -->
+  <link rel="icon" href="images/fevicon.png" type="image/gif" />
+  <!-- Scrollbar Custom CSS -->
+  <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+  <!-- Tweaks for older IEs-->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+  
+  <!-- Login Page Specific CSS -->
+  <style>
+    
+  </style>
+</head>
+<body>
+  <!-- header section start -->
+  <div class="header_section">
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/"><img src="images/logo.png" alt="Modol Logo"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/models">Models</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/agency">Agencies</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/contact">Contact Us</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/login">LOGIN</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <!-- header section end -->
+
+  <!-- login section start -->
+  <div class="login-page">
+    <div class="container">
+      <div class="login-container" style="
+    margin-top: 70px;">
+        <!-- Replace with your logo -->
+        <img src="images/user.png" alt="login" class="login-logo">
+        
+        
+        <div id="message" class="login-message"></div>
+        
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="your@email.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+          </div>
+          
+          <button type="submit" class="btn-login">Login</button>
+        </form>
+        
+        <p class="login-footer">
+          Not registered yet? <a href="/register">Create an account</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- login section end -->
+
+  <!-- footer section start -->
+  <div class="footer_section layout_padding">
+    <div class="container">
+      <div class="footer_main">
+        <div class="location_text">
+          <ul>
+            <li>
+              <a href="#">
+                <img src="images/map-icon.png" alt="Address"><span class="padding_left_10">Address : Loram Ipusm</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <img src="images/call-icon.png" alt="Phone"><span class="padding_left_10">Call : +01 1234567890</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <img src="images/mail-icon.png" alt="Email"><span class="padding_left_10">Email : demo@gmail.com</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- footer section end -->
+
+
+  <!-- Javascript files-->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/jquery-3.0.0.min.js"></script>
+  <script src="js/plugin.js"></script>
+  <!-- sidebar -->
+  <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="js/custom.js"></script>
+  
+  <!-- Login Page Specific JavaScript -->
+  <script>
+    const form = document.getElementById('loginForm');
+    const messageDiv = document.getElementById('message');
+
+    // Handle form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      messageDiv.textContent = '';
+      messageDiv.className = '';
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(Object.fromEntries(formData))
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Store token in cookie and localStorage
+          document.cookie = `token=${data.token}; path=/; max-age=86400`; // 1 day
+          localStorage.setItem('token', data.token);
+          
+          // Redirect to the appropriate dashboard
+          window.location.href = data.redirectTo;
+        } else {
+          showMessage(data.message || 'Login failed. Please check your credentials.', 'error');
+        }
+      } catch (error) {
+        showMessage('An unexpected error occurred. Please try again.', 'error');
+        console.error('Login error:', error);
+      }
+    });
+
+    // Show status message from registration
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('registered')) {
+      showMessage('Registration successful! Please login with your credentials.', 'success');
+    }
+
+    function showMessage(text, className) {
+      messageDiv.textContent = text;
+      messageDiv.className = className;
+      
+      // Auto-hide success messages after 5 seconds
+      if (className === 'success') {
+        setTimeout(() => {
+          messageDiv.textContent = '';
+          messageDiv.className = '';
+        }, 5000);
+      }
+    }
+  </script>
+</body>
+</html>
